@@ -1,10 +1,21 @@
+/**
+ * Sets up Justified Gallery.
+ */
+if (!!$.prototype.justifiedGallery) {
+  var options = {
+    rowHeight: 140,
+    margins: 4,
+    lastRow: "justify"
+  };
+  $(".article-gallery").justifiedGallery(options);
+}
+
+window.isMobile = () => {
+  let flag = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  return flag;
+}
+
 $(function () {
-  handlePreviewImage();
-
-  $("#img-preview-overlay").on("click", function (event) {
-    $(this).addClass("hidden-preview-img-overlay").removeClass("show-preview-img-overlay");
-  });
-
   /**
    * Shows the responsive navigation menu on mobile.
    */
@@ -18,7 +29,7 @@ $(function () {
    */
   if ($(".post").length) {
     const menu = $("#menu");
-    const nav = $("#menu > #nav");
+    // const nav = $("#menu > #nav");
     const menuIcon = $("#menu-icon, #menu-icon-tablet");
 
     /**
@@ -51,11 +62,11 @@ $(function () {
         var topDistance = menu.offset().top;
 
         // hide only the navigation links on desktop
-        if (!nav.is(":visible") && topDistance < 50) {
-          nav.show();
-        } else if (nav.is(":visible") && topDistance > 100) {
-          nav.hide();
-        }
+        // if (!nav.is(":visible") && topDistance < 50) {
+        //   nav.show();
+        // } else if (nav.is(":visible") && topDistance > 100) {
+        //   nav.hide();
+        // }
 
         // on tablet, hide the navigation icon as well and show a "scroll to top
         // icon" instead
@@ -102,18 +113,8 @@ $(function () {
       });
     }
   }
+
+  // mount it!
+  $("article .content pre").wrap('<figure class="highlight"></figure>');
+  $("figure.highlight pre code").addClass('hljs');
 });
-
-function handlePreviewImage() {
-  const contentImgDom = $("article img");
-  contentImgDom.attr("title", "点击预览").css("cursor", "pointer");
-
-  contentImgDom.on("click", function (evt) {
-    const imgSrc = $(this).attr("src");
-    const imgAlt = $(this).attr("alt");
-
-    const imgPreviewDom = $("#img-preview-overlay");
-    imgPreviewDom.addClass("show-preview-img-overlay");
-    imgPreviewDom.html("<img src='" + imgSrc + "' alt='" + imgAlt + "' />");
-  });
-}
